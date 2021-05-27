@@ -221,13 +221,17 @@ def get_inference(result):
   _, index = torch.max(result, 1)
   index = index.cpu().numpy()[0]
   if(index == 0):
-    return 
+    return ""
   if(index == 1):
+    return ""
   if(index == 2):
+    return " "
 
 def get_model_inference(img):
   get_model()
   result = model(img)
+  result = get_inference(result)
+  return result
 
 
 
