@@ -196,7 +196,6 @@ data_transforms = transforms.Compose([
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-        
 def convertToPIL(img):
     img = Image.fromarray(img)
     return img
@@ -221,17 +220,14 @@ def get_inference(result):
   _, index = torch.max(result, 1)
   index = index.cpu().numpy()[0]
   if(index == 0):
-    return ""
+    return "employee"
   if(index == 1):
-    return ""
+    return "other"
   if(index == 2):
-    return " "
+    return "person"
 
 def get_model_inference(img):
   get_model()
   result = model(img)
   result = get_inference(result)
   return result
-
-
-
