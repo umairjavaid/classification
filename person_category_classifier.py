@@ -211,9 +211,9 @@ def makeImgModelReady(img):
 
 def get_model():
   model = ResNetCam(Bottleneck, [3, 4, 6, 3])
-  model = model.load_state_dict(torch.load("saved_models/resnet_cefl.pt"))
-  model = model.to("cuda:0")
-  model = model.eval()
+  model.to("cuda:0")
+  model.load_state_dict(torch.load("/content/drive/MyDrive/omno/resnet_cefl_staff-employee-classification.pt"))
+  model.eval()
   return model
 
 def get_inference(result):
@@ -227,7 +227,8 @@ def get_inference(result):
     return "person"
 
 def get_model_inference(img):
-  get_model()
+  model = get_model()
+  img = makeImgModelReady(img)
   result = model(img)
   result = get_inference(result)
   return result
