@@ -4,8 +4,6 @@ from person_category_classifier import get_model_inference
 
 def get_person_cat(img):
   result = get_model_inference(img)
-  result = model(img)
-  
   return result
 
 def read_img(img_path):
