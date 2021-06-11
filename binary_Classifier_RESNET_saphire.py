@@ -21,6 +21,8 @@ from torch.utils.model_zoo import load_url
 import torch.nn.functional as F
 import os
 from efficientnet_pytorch import EfficientNet
+import torch.onnx
+
 
 def initialize_weights(modules, init_mode):
     for m in modules:
@@ -171,16 +173,16 @@ def remove_layer(state_dict, keyword):
 data_transforms = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(10),
-        transforms.Resize((224,112)),
+        transforms.Resize((150,150)),
         #transforms.RandomResizedCrop(224),
         transforms.RandomAffine(15),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-data_dir = "/home/omnoai/Desktop/umAir/staff-employee-classification/saphire/Sapphire crops data/"
+data_dir = "/content/dataset/"
 dataset = datasets.ImageFolder(data_dir,transform= data_transforms)
-train_dataset, test_dataset = torch.utils.data.random_split(dataset,[9519,2380], generator=torch.Generator().manual_seed(0))
+train_dataset, test_dataset = torch.utils.data.random_split(dataset,[700,174], generator=torch.Generator().manual_seed(0))
 train_loader = torch.utils.data.DataLoader(
     train_dataset,
     batch_size=32,
@@ -346,8 +348,8 @@ model = EfficientNet.from_pretrained('efficientnet-b0',num_classes=2)
 print(model)
 
 #model = ResNetCam(Bottleneck, [3, 4, 6, 3])
-model = load_pretrained_model(model, "resnet50")
+#model = load_pretrained_model(model, "resnet50")
 model = tune_model(model)
-saved_model_path = "/home/omnoai/Desktop/umAir/"
-os.chdir(saved_model_path)
-torch.save(model.state_dict(), "saved_models/resnet_cefl_binary_combined_dataset_saphire_efficientNet.pt")
+#saved_model_path = "/content/saved_models"
+#os.chdir(saved_model_path)
+torch.save(model.state_dict(), "/content/saved_models/maskClassification-efficientNet-CEFL.pt")
