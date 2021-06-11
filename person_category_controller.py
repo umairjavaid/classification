@@ -1,16 +1,28 @@
 import cv2
 import numpy as np 
-from person_category_classifier import get_model_inference
+from staff_employee_classification.person_category_classifier import modelController
+
+mc = modelController()
 
 def get_person_cat(img):
-  result = get_model_inference(img)
+  result = mc.get_model_inference(img)
   return result
 
 def read_img(img_path):
     img = cv2.imread(img_path)
     return img
 
-def get_person_tag(img_left, img_top, img_width, img_height, img):
-  patch = img[img_top:img_top+img_height,img_left:img_left+img_width,:]
+def get_person_tag(row_start, row_end, col_start, col_end, img, BGR=False):
+  patch = img[row_start:row_end,col_start:col_end,::(1 if BGR else -1)]
   cat = get_person_cat(patch)
   return cat
+
+
+
+
+
+
+
+
+
+
