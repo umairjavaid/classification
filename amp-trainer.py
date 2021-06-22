@@ -50,6 +50,26 @@ test_loader = torch.utils.data.DataLoader(
 )
 dataloaders_dict = {'train': train_loader, 'val':test_loader}
 
+import torch, time, gc
+
+# Timing utilities
+start_time = None
+
+def start_timer():
+    global start_time
+    gc.collect()
+    torch.cuda.empty_cache()
+    torch.cuda.reset_max_memory_allocated()
+    torch.cuda.synchronize()
+    start_time = time.time()
+
+def end_timer_and_print(local_msg):
+    torch.cuda.synchronize()
+    end_time = time.time()
+    print("\n" + local_msg)
+    print("Total execution time = {:.3f} sec".format(end_time - start_time))
+    print("Max memory used by tensors = {} bytes".format(torch.cuda.max_memory_allocated()))
+
 def train_model(model, dataloaders, criterion, optimizer, num_epochs=32):
     since = time.time()
     device = "cuda:0"
